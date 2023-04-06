@@ -135,7 +135,10 @@ const updateProduct = (req, res)=>{
 
  
         product.save().then((product)=>{
-            return  res.status(200).send({message:"Product saved successfully!"})
+            return  res.status(200).send({
+                message:"Product saved successfully!",
+                data: product
+            })
         }).catch((err)=>{
             return res.status(400).send({
                 message:"There was an error saving product data!",
@@ -167,16 +170,40 @@ const deleteProduct = (req, res)=>{
     })
 }
 
+const addCommand = (req, res)=>{
+
+    const {table} = req.body.command
+
+    const newCommand = new Command({
+        table: table,
+        amount: 0
+    })
+
+    newCommand.save().then((command)=>{
+        return  res.status(200).send({
+            message: `Table ${table} command successfully created!`,
+            data: command
+        })
+    }).catch((err)=>{
+        return res.status(400).send({
+            message: "There was an error saving Command!",
+            error: err
+        })
+    })
+
+
+}
+
 const allCommand = (req, res)=>{
     
-    Command.find().populate("category").then((commands)=>{
+    Command.find().then((commands)=>{
 
         if(commands.length === 0){
             res.status(400).send({message: "No Command found!"})    
         }
         
         res.status(200).send({
-            message: "Commands found!",
+            message: "Commands Found!",
             data: commands
         })
     }).catch((err)=>{
@@ -187,4 +214,83 @@ const allCommand = (req, res)=>{
     })
 }
 
-module.exports = { login, allCategories, newProduct, allProducts, searchProduct, updateProduct, deleteProduct, allCommand }
+const searchCommand = (req, res)=>{
+
+    const {id} = req.params
+
+    Command.findOne({_id: id}).then((command) =>{         
+        return res.status(200).send({
+            message: "Command Found!",
+            data: command
+        })    
+    }).catch((err)=>{
+        return res.status(400).send({
+            message: "No Command Found!",
+            error: err
+        })
+    })
+}
+
+const addProductInCommand = (req, res) =>{
+
+    const {idProduct, qty} = req.body.product
+    const {id} = req.params
+    
+        Product.findOne({_id: idProduct}).then((product)=>{
+        
+            if(product.qty < 0){
+                return res.status(400).send({
+                    message:"Out of stock product available!"
+                })
+            }
+            
+            Command.findOne({_id: id}).then((command)=>{
+                  
+                command.items.push({
+                    _id: command.items.length+1,
+                    nameProduto: product.name,
+                    idProduct: idProduct,
+                    price: product.price,
+                    qty: Number(qty),
+                    amount: Number(qty) * Number(product.price)
+                })
+                                    
+                let amount = 0
+
+                command.items.map((value) =>{
+                        amount += value.amount
+                })
+
+                command.amount = amount
+                
+                command.save().then((command)=>{
+                    return  res.status(200).send({
+                        message:"Item added successfully!",
+                        body: command
+                    })
+                }).catch((err)=>{
+                    return res.status(400).send({
+                        message:"An error occurred while adding the item to the command!",
+                        error: err
+                    })
+                })
+            }).catch((err)=>{
+                return res.status(400).send({
+                    message:"No Command Found!",
+                    error: err
+                })
+            })
+
+            product.qty -= Number(qty)
+
+            product.save()
+    }).catch((err)=>{
+        return res.status(400).send({
+            message:"No Product Found!",
+            error: err
+        })
+    })
+}
+
+
+module.exports = { login, allCategories, newProduct, allProducts, searchProduct, updateProduct, deleteProduct, allCommand, searchCommand, addCommand, addProductInCommand }

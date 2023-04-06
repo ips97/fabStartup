@@ -17,5 +17,12 @@ router.patch("/product/:id", authAdmin, admin.updateProduct)
 router.delete("/product/:id", authAdmin, admin.deleteProduct)
 
 router.get("/command", authAdmin, admin.allCommand)
+router.patch("/command/:id", authAdmin, admin.addProductInCommand)
+router.get("/command/:id", authAdmin, admin.searchCommand)
+router.post("/command", authAdmin, admin.addCommand)
+
+
+
+
 
 module.exports = router;
