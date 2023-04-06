@@ -17,36 +17,36 @@
 
 ## Rotas
 
-- POST /admin/auth/login : para fazer o login na aplicação, 
+- POST /admin/auth/login : para fazer o login na aplicação.
 Obs: é necessário passar um objeto "user" com os campos: email e password, ele retornará um token que deverá ser repassado no header das requisições para o restante das solicitações
 
-- GET /admin/category : para listar todas as categorias de produtos
+- GET /admin/category : para listar todas as categorias de produtos.
 Obs: Tem que passar o token no header
 
-- GET /admin/product : para listar todos os produtos
+- GET /admin/product : para listar todos os produtos.
 Obs: Tem que passar o token no header
 
-- GET /admin/product/:id : para pegar um produto
+- GET /admin/product/:id : para pegar um produto.
 Obs: Tem que passar o id do produto na url e o token no header
 
-- POST /admin/product : para criar um produto novo
+- POST /admin/product : para criar um produto novo.
 Obs: Tem ser passado um objeto "product" com os campos: name, qty, price e o id da categoria e o token no header
 
-- PATCH /admin/product/:id : para alterar um produto
+- PATCH /admin/product/:id : para alterar um produto.
 Obs:  Tem que passar o id do prodto na url e um objeto "product" com as alterações e o token no header
 
-- DELETE /admin/product/:id : para excluir um produto
+- DELETE /admin/product/:id : para excluir um produto.
 Obs: Tem que passar o id do produto na url e o token no header
 
-- GET /admin/command : para listar todas as comandas
+- GET /admin/command : para listar todas as comandas.
 Obs: Tem que passar o token no header
 
-- POST /admin/command : para criar uma comanda
+- POST /admin/command : para criar uma comanda.
 Obs: Tem que passar um objeto "command" passando o número da mesa de onde virá os pedidos
 
-- PATCH /admin/command/:id : para adicionar produto na comanda
+- PATCH /admin/command/:id : para adicionar produto na comanda.
 Obs: Tem ser passado o id da comanda na url, um objeto "product" com o id e qty do produto e o token no header
 
-- GET /admin/command/:id : para listar uma comanda
+- GET /admin/command/:id : para listar uma comanda.
 Obs: Tem que passar o id da comanda na url e o token no header
 
