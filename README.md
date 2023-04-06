@@ -2,7 +2,7 @@
 
 ## O que é?
 
-- Este resositório consiste num protótipo de aplicação de para um restaurante, com controle de produtos, comandas
+- Este repositório consiste num protótipo de aplicação de para um restaurante, com controle de produtos e comandas
 
 ## Tecnologias
 
